@@ -8,5 +8,6 @@ interface RepoApi {
     @GET("search/repositories")
     suspend fun getRepoList(
         @Query("q") keyword: String,
+        @Query("page") page: Int,
     ): SearchResponse
 }

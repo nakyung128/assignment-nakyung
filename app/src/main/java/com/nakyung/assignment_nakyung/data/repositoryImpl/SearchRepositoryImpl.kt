@@ -4,8 +4,6 @@ import com.nakyung.assignment_nakyung.data.api.RepoApi
 import com.nakyung.assignment_nakyung.domain.Result
 import com.nakyung.assignment_nakyung.domain.model.SearchResponse
 import com.nakyung.assignment_nakyung.domain.repository.SearchRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class SearchRepositoryImpl
@@ -13,13 +11,14 @@ class SearchRepositoryImpl
     constructor(
         private val api: RepoApi,
     ) : SearchRepository {
-        override suspend fun searchRepo(keyword: String): Flow<Result<SearchResponse>> =
-            flow {
-                try {
-                    val response = api.getRepoList(keyword)
-                    emit(Result.Success(response))
-                } catch (e: Exception) {
-                    emit(Result.Error(e.message ?: ""))
-                }
+        override suspend fun searchRepo(
+            keyword: String,
+            page: Int,
+        ): Result<SearchResponse> =
+            try {
+                val response = api.getRepoList(keyword, page)
+                Result.Success(response)
+            } catch (e: Exception) {
+                Result.Error(e.message ?: "Unknown error")
             }
     }

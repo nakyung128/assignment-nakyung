@@ -15,6 +15,7 @@ retrofit = "2.11.0"
 hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
 coil = "2.4.0"
+pagingCompose = "3.3.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +40,8 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

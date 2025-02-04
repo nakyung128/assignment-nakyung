@@ -83,4 +83,7 @@ dependencies {
 
     // coil
     implementation(libs.coil)
+
+    // pagination
+    implementation(libs.androidx.paging.compose)
 }

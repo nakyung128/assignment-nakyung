@@ -43,7 +43,7 @@ fun RepoListItem(
             AsyncImage(
                 modifier =
                     Modifier
-                        .size(size = 30.dp)
+                        .size(size = 25.dp)
                         .clip(shape = CircleShape),
                 model = item.owner.avatarUrl,
                 contentDescription = "owner_image",
@@ -84,13 +84,17 @@ fun RepoListItem(
                 text = item.stargazersCount.toKFormat(),
                 color = Color.Gray,
             )
+            if (item.language != null) {
+                Spacer(modifier = Modifier.width(8.dp))
+                LanguageWithCircle(language = item.language)
+            }
         }
     }
 }
 
 fun Int.toKFormat(): String =
     when {
-        this >= 1_000_000 -> String.format("%.1fM", this / 1_000_000.0)
-        this >= 1_000 -> String.format("%.1fK", this / 1_000.0)
+        this >= 1_000_000 -> String.format("%.1fm", this / 1_000_000.0)
+        this >= 1_000 -> String.format("%.1fk", this / 1_000.0)
         else -> this.toString()
     }

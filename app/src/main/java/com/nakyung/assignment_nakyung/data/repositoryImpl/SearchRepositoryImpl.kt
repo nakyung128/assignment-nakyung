@@ -16,7 +16,6 @@ class SearchRepositoryImpl
         override suspend fun searchRepo(keyword: String): Flow<Result<SearchResponse>> =
             flow {
                 try {
-                    emit(Result.Loading)
                     val response = api.getRepoList(keyword)
                     emit(Result.Success(response))
                 } catch (e: Exception) {

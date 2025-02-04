@@ -1,87 +1,149 @@
 package com.nakyung.assignment_nakyung.ui.search
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.nakyung.assignment_nakyung.R
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.nakyung.assignment_nakyung.components.RepoListItem
+import com.nakyung.assignment_nakyung.components.SearchBar
+import com.nakyung.assignment_nakyung.domain.model.Item
 
 @Composable
 fun SearchRoute(
     modifier: Modifier,
-    searchViewModel: SearchViewModel = viewModel(),
+    viewModel: SearchViewModel = hiltViewModel(),
     navigateToDetail: () -> Unit,
 ) {
-    SearchScreen(
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val resultList = viewModel.pagingData.collectAsLazyPagingItems()
+
+    HandleSearchUi(
         modifier = modifier,
-        searchRepo = {},
+        searchRepo = viewModel::getSearchResult,
+        uiState = uiState,
+        resultList = resultList,
     )
+}
+
+@Composable
+fun HandleSearchUi(
+    modifier: Modifier,
+    searchRepo: (String) -> Unit,
+    uiState: SearchUiState,
+    resultList: LazyPagingItems<Item>,
+) {
+    var keyword by remember { mutableStateOf("") }
+    Column(
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(color = Color.White),
+    ) {
+        SearchBar(
+            keyword = keyword,
+            onKeywordChanged = { keyword = it },
+            onSearchClick = {
+                searchRepo(keyword)
+            },
+        )
+
+        // UI 상태에 따라 화면 처리
+        when (uiState) {
+            SearchUiState.Init -> {} // 아무것도 하지 않은 기본 상태
+
+            SearchUiState.Success -> {
+                SearchScreen(
+                    modifier = modifier,
+                    resultList = resultList,
+                )
+            }
+
+            is SearchUiState.Error -> {
+                ErrorScreen(
+                    modifier = modifier,
+                    message = uiState.message,
+                )
+            }
+        }
+    }
 }
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    searchRepo: (String) -> Unit = {},
+    resultList: LazyPagingItems<Item>,
 ) {
-    var keyword by remember { mutableStateOf("") }
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = Color.White,
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            TextField(
-                modifier = Modifier.weight(9f),
-                value = keyword,
-                onValueChange = {
-                    keyword = it
-                },
-                placeholder = {
-                    Text(text = "검색어를 입력해 주세요")
-                },
-                trailingIcon = {
-                    Icon(
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .size(size = 30.dp)
-                                .clickable { },
-                        painter = painterResource(id = R.drawable.ic_search),
-                        contentDescription = "search",
-                        tint = Color.Unspecified,
-                    )
-                },
-                colors =
-                    TextFieldDefaults.colors(
-                        unfocusedContainerColor = Color.White,
-                        focusedContainerColor = Color.White,
-                        unfocusedIndicatorColor = Color.Gray,
-                        focusedIndicatorColor = Color.Black,
-                    ),
-            )
+    val state = rememberLazyListState()
+
+    LaunchedEffect(resultList.loadState.refresh) {
+        state.scrollToItem(0)
+    }
+
+    when {
+        resultList.loadState.refresh is LoadState.Loading -> {
+            LoadingScreen()
         }
+
+        else -> {
+            LazyColumn(
+                modifier = modifier.fillMaxSize(),
+                state = state,
+            ) {
+                items(resultList.itemCount) { index ->
+                    val item = resultList[index]
+                    item?.let {
+                        RepoListItem(item = it)
+                        HorizontalDivider()
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun ErrorScreen(
+    modifier: Modifier = Modifier,
+    message: String,
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = message,
+            fontSize = 16.sp,
+        )
     }
 }

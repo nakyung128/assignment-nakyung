@@ -2,11 +2,10 @@ package com.nakyung.assignment_nakyung.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nakyung.assignment_nakyung.ui.search.SearchScreen
+import com.nakyung.assignment_nakyung.ui.search.SearchRoute
 
 @Composable
 fun AppNavHost(
@@ -22,8 +21,11 @@ fun AppNavHost(
         composable(
             route = ScreenDestinations.Search.route,
         ) {
-            SearchScreen(
+            SearchRoute(
                 modifier = modifier,
+                navigateToDetail = {
+                    navController.navigate(ScreenDestinations.Detail.route)
+                },
             )
         }
     }

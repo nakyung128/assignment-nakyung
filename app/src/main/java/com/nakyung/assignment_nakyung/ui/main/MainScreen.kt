@@ -1,7 +1,6 @@
 package com.nakyung.assignment_nakyung.ui.main
 
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -16,12 +15,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = modifier,
-    ) { _ ->
+    ) { innerPadding ->
         Surface(
             modifier =
                 modifier
-                    .statusBarsPadding()
-                    .navigationBarsPadding(),
+                    .padding(innerPadding),
         ) {
             AppNavHost(
                 modifier = modifier,

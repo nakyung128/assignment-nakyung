@@ -76,11 +76,11 @@ dependencies {
     implementation(libs.converter.gson) // Gson 변환기
     implementation(libs.logging.interceptor) // 로그 인터셉터
 
-    // Coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
-
     // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // coil
+    implementation(libs.coil)
 }

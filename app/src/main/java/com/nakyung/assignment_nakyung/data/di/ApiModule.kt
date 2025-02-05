@@ -1,4 +1,4 @@
-package com.nakyung.assignment_nakyung.di
+package com.nakyung.assignment_nakyung.data.di
 
 import com.nakyung.assignment_nakyung.data.api.DetailApi
 import com.nakyung.assignment_nakyung.data.api.RepoApi

@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nakyung.assignment_nakyung.R
 import com.nakyung.assignment_nakyung.domain.model.Item
-import com.nakyung.assignment_nakyung.ui.util.toKFormat
+import com.nakyung.assignment_nakyung.core.util.toKFormat
 
 @Composable
 fun RepoListItem(

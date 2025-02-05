@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +24,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.nakyung.assignment_nakyung.components.ErrorScreen
+import com.nakyung.assignment_nakyung.components.LoadingDialog
 import com.nakyung.assignment_nakyung.components.RepoListItem
 import com.nakyung.assignment_nakyung.components.SearchBar
 import com.nakyung.assignment_nakyung.domain.model.Item
@@ -33,7 +34,7 @@ import com.nakyung.assignment_nakyung.domain.model.Item
 fun SearchRoute(
     modifier: Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
-    navigateToDetail: () -> Unit,
+    navigateToDetail: (String, String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resultList = viewModel.pagingData.collectAsLazyPagingItems()
@@ -43,6 +44,7 @@ fun SearchRoute(
         searchRepo = viewModel::getSearchResult,
         uiState = uiState,
         resultList = resultList,
+        navigateToDetail = navigateToDetail,
     )
 }
 
@@ -52,6 +54,7 @@ fun HandleSearchUi(
     searchRepo: (String) -> Unit,
     uiState: SearchUiState,
     resultList: LazyPagingItems<Item>,
+    navigateToDetail: (String, String) -> Unit,
 ) {
     var keyword by remember { mutableStateOf("") }
     Column(
@@ -76,6 +79,7 @@ fun HandleSearchUi(
                 SearchScreen(
                     modifier = modifier,
                     resultList = resultList,
+                    navigateToDetail = navigateToDetail,
                 )
             }
 
@@ -93,6 +97,7 @@ fun HandleSearchUi(
 fun SearchScreen(
     modifier: Modifier = Modifier,
     resultList: LazyPagingItems<Item>,
+    navigateToDetail: (String, String) -> Unit,
 ) {
     val state = rememberLazyListState()
 
@@ -102,7 +107,7 @@ fun SearchScreen(
 
     when {
         resultList.loadState.refresh is LoadState.Loading -> {
-            LoadingScreen()
+            LoadingDialog()
         }
 
         else -> {
@@ -113,37 +118,14 @@ fun SearchScreen(
                 items(resultList.itemCount) { index ->
                     val item = resultList[index]
                     item?.let {
-                        RepoListItem(item = it)
+                        RepoListItem(
+                            item = it,
+                            onClick = navigateToDetail,
+                        )
                         HorizontalDivider()
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun ErrorScreen(
-    modifier: Modifier = Modifier,
-    message: String,
-) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = message,
-            fontSize = 16.sp,
-        )
     }
 }

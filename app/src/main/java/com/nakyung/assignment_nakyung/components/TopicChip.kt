@@ -37,9 +37,9 @@ fun Chip(topic: String) {
                 .background(
                     color = Color(0xFFF1F3F5),
                     shape = RoundedCornerShape(15.dp),
-                ).padding(horizontal = 10.dp, vertical = 5.dp),
+                ).padding(horizontal = 10.dp, vertical = 2.dp),
         text = topic,
-        fontSize = 12.sp,
+        fontSize = 14.sp,
         color = Color.Gray,
         fontWeight = FontWeight.W400,
     )

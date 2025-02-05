@@ -20,6 +20,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,7 +30,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.nakyung.assignment_nakyung.components.ErrorScreen
+import com.nakyung.assignment_nakyung.components.LoadingDialog
 import com.nakyung.assignment_nakyung.components.TopicChip
 import com.nakyung.assignment_nakyung.components.toKFormat
 
@@ -37,7 +43,44 @@ fun DetailRoute(
     modifier: Modifier,
     owner: String,
     repo: String,
+    viewModel: DetailViewModel = hiltViewModel(),
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.getDetail(owner, repo)
+    }
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    HandleDetailUi(modifier = modifier, uiState = uiState)
+}
+
+@Composable
+fun HandleDetailUi(
+    modifier: Modifier,
+    uiState: DetailUiState,
+) {
+    when (uiState) {
+        is DetailUiState.Success -> {
+            DetailScreen(
+                modifier = modifier,
+                imgUrl = uiState.imgUrl,
+                name = uiState.name,
+                username = uiState.username,
+                starCount = uiState.starCount,
+                watcherCount = uiState.watcherCount,
+                forksCount = uiState.forksCount,
+                description = uiState.description,
+                topics = uiState.topics,
+            )
+        }
+
+        DetailUiState.Loading -> {
+            LoadingDialog()
+        }
+
+        is DetailUiState.Error -> {
+            ErrorScreen(message = uiState.message)
+        }
+    }
 }
 
 @Composable
@@ -177,7 +220,7 @@ fun DetailScreenPreview() {
         watcherCount = 3900,
         forksCount = 3100,
         description = ":phone: The ownCloud Android App",
-        topics = listOf("android", "kotlin", "owncloud"),
+        topics = listOf("android", "kotlin", "owncloud", "android", "kotlin", "owncloud"),
         username = "owncloud",
     )
 }

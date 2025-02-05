@@ -1,6 +1,7 @@
 package com.nakyung.assignment_nakyung.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,11 +30,13 @@ import com.nakyung.assignment_nakyung.domain.model.Item
 fun RepoListItem(
     modifier: Modifier = Modifier,
     item: Item,
+    onClick: (String, String) -> Unit,
 ) {
     Column(
         modifier =
             modifier
                 .fillMaxWidth()
+                .clickable { onClick(item.owner.login, item.name) }
                 .padding(horizontal = 15.dp, vertical = 15.dp)
                 .background(color = Color.Unspecified),
     ) {

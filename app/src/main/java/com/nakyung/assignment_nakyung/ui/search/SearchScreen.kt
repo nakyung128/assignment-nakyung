@@ -33,7 +33,7 @@ import com.nakyung.assignment_nakyung.domain.model.Item
 fun SearchRoute(
     modifier: Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
-    navigateToDetail: () -> Unit,
+    navigateToDetail: (String, String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resultList = viewModel.pagingData.collectAsLazyPagingItems()
@@ -43,6 +43,7 @@ fun SearchRoute(
         searchRepo = viewModel::getSearchResult,
         uiState = uiState,
         resultList = resultList,
+        navigateToDetail = navigateToDetail,
     )
 }
 
@@ -52,6 +53,7 @@ fun HandleSearchUi(
     searchRepo: (String) -> Unit,
     uiState: SearchUiState,
     resultList: LazyPagingItems<Item>,
+    navigateToDetail: (String, String) -> Unit,
 ) {
     var keyword by remember { mutableStateOf("") }
     Column(
@@ -76,6 +78,7 @@ fun HandleSearchUi(
                 SearchScreen(
                     modifier = modifier,
                     resultList = resultList,
+                    navigateToDetail = navigateToDetail,
                 )
             }
 
@@ -93,6 +96,7 @@ fun HandleSearchUi(
 fun SearchScreen(
     modifier: Modifier = Modifier,
     resultList: LazyPagingItems<Item>,
+    navigateToDetail: (String, String) -> Unit,
 ) {
     val state = rememberLazyListState()
 
@@ -113,7 +117,10 @@ fun SearchScreen(
                 items(resultList.itemCount) { index ->
                     val item = resultList[index]
                     item?.let {
-                        RepoListItem(item = it)
+                        RepoListItem(
+                            item = it,
+                            onClick = navigateToDetail,
+                        )
                         HorizontalDivider()
                     }
                 }

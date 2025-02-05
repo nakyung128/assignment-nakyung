@@ -1,4 +1,4 @@
-package com.nakyung.assignment_nakyung.di
+package com.nakyung.assignment_nakyung.data.di
 
 import dagger.Module
 import dagger.Provides

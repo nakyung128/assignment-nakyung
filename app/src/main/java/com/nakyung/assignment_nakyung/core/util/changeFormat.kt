@@ -1,4 +1,4 @@
-package com.nakyung.assignment_nakyung.ui.util
+package com.nakyung.assignment_nakyung.core.util
 
 fun Int.toKFormat(): String =
     when {

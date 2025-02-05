@@ -1,4 +1,4 @@
-package com.nakyung.assignment_nakyung.core
+package com.nakyung.assignment_nakyung
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

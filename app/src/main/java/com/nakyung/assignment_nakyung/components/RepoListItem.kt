@@ -70,7 +70,7 @@ fun RepoListItem(
             Text(
                 text = item.description,
                 color = Color.DarkGray,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
             )
             Spacer(modifier = Modifier.height(10.dp))
         }

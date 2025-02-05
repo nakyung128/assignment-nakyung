@@ -13,22 +13,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nakyung.assignment_nakyung.ui.theme.CColor
+import com.nakyung.assignment_nakyung.ui.theme.DartColor
+import com.nakyung.assignment_nakyung.ui.theme.HTMLColor
+import com.nakyung.assignment_nakyung.ui.theme.JavaColor
+import com.nakyung.assignment_nakyung.ui.theme.JavaScriptColor
+import com.nakyung.assignment_nakyung.ui.theme.KotlinColor
+import com.nakyung.assignment_nakyung.ui.theme.OtherColor
+import com.nakyung.assignment_nakyung.ui.theme.PHPColor
+import com.nakyung.assignment_nakyung.ui.theme.PythonColor
+import com.nakyung.assignment_nakyung.ui.theme.SwiftColor
+import com.nakyung.assignment_nakyung.ui.theme.TypeScriptColor
 
 @Composable
 fun LanguageWithCircle(language: String) {
     val circleColor: Color =
         when (language) {
-            "Kotlin" -> Color(0xFF7F52FF)
-            "Java" -> Color(0xFFB07219)
-            "JavaScript" -> Color(0xFFF7DF1E)
-            "TypeScript" -> Color(0xFF31859C)
-            "Dart" -> Color(0xFF98BAD6)
-            "PHP" -> Color(0xFF4F5D95)
-            "HTML" -> Color(0xFFe44b23)
-            "Swift" -> Color(0xFFffac45)
-            "C" -> Color(0xFF555555)
-            "Python" -> Color(0xFF3581ba)
-            else -> Color(0xFFededed)
+            "Kotlin" -> KotlinColor
+            "Java" -> JavaColor
+            "JavaScript" -> JavaScriptColor
+            "TypeScript" -> TypeScriptColor
+            "Dart" -> DartColor
+            "PHP" -> PHPColor
+            "HTML" -> HTMLColor
+            "Swift" -> SwiftColor
+            "C" -> CColor
+            "Python" -> PythonColor
+            else -> OtherColor
         }
 
     Row(

@@ -1,0 +1,52 @@
+package com.nakyung.assignment_nakyung.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+@Composable
+fun TopicChip(topics: List<String>) {
+    val state = rememberLazyListState()
+
+    LazyRow(
+        state = state,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        items(topics.size) { index ->
+            Chip(topic = topics[index])
+        }
+    }
+}
+
+@Composable
+fun Chip(topic: String) {
+    Text(
+        modifier =
+            Modifier
+                .background(
+                    color = Color(0xFFF1F3F5),
+                    shape = RoundedCornerShape(15.dp),
+                ).padding(horizontal = 10.dp, vertical = 5.dp),
+        text = topic,
+        fontSize = 12.sp,
+        color = Color.Gray,
+        fontWeight = FontWeight.W400,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TopicChipPreview() {
+    TopicChip(listOf("android", "kotlin", "owncloud"))
+}

@@ -40,6 +40,7 @@ import coil.compose.AsyncImage
 import com.nakyung.assignment_nakyung.components.ErrorScreen
 import com.nakyung.assignment_nakyung.components.LoadingDialog
 import com.nakyung.assignment_nakyung.components.TopicChip
+import com.nakyung.assignment_nakyung.ui.theme.LightBlue
 import com.nakyung.assignment_nakyung.ui.util.toKFormat
 
 @Composable
@@ -117,9 +118,9 @@ fun DetailScreen(
 
     Surface(
         modifier =
-        modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
+            modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
         color = Color.White,
     ) {
         Column(
@@ -137,9 +138,9 @@ fun DetailScreen(
             HorizontalDivider(color = Color.LightGray)
             Box(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Row(
@@ -160,9 +161,9 @@ fun DetailScreen(
             ) {
                 AsyncImage(
                     modifier =
-                    Modifier
-                        .size(size = 35.dp)
-                        .clip(shape = CircleShape),
+                        Modifier
+                            .size(size = 35.dp)
+                            .clip(shape = CircleShape),
                     model = imgUrl,
                     contentDescription = "user_profile",
                 )
@@ -177,7 +178,7 @@ fun DetailScreen(
                     onClick = { onShowBottomSheet(username) },
                     colors =
                         ButtonColors(
-                            containerColor = Color.Blue,
+                            containerColor = LightBlue,
                             contentColor = Color.White,
                             disabledContentColor = Color.DarkGray,
                             disabledContainerColor = Color.Gray,

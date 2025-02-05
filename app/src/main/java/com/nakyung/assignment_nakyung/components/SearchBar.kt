@@ -13,7 +13,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -38,6 +37,7 @@ fun SearchBar(
         placeholder = {
             Text(text = "검색어를 입력해 주세요")
         },
+        singleLine = true,
         trailingIcon = {
             Icon(
                 modifier =
@@ -57,6 +57,7 @@ fun SearchBar(
                 focusedContainerColor = Color.White,
                 unfocusedIndicatorColor = Color.Gray,
                 focusedIndicatorColor = Color.Black,
+                focusedTextColor = Color.Black,
             ),
         keyboardOptions =
             KeyboardOptions(

@@ -40,8 +40,8 @@ import coil.compose.AsyncImage
 import com.nakyung.assignment_nakyung.components.ErrorScreen
 import com.nakyung.assignment_nakyung.components.LoadingDialog
 import com.nakyung.assignment_nakyung.components.TopicChip
+import com.nakyung.assignment_nakyung.core.util.toKFormat
 import com.nakyung.assignment_nakyung.ui.theme.LightBlue
-import com.nakyung.assignment_nakyung.ui.util.toKFormat
 
 @Composable
 fun DetailRoute(
@@ -131,6 +131,7 @@ fun DetailScreen(
                 text = name,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.SemiBold,
+                color = Color.Black,
             )
             Spacer(modifier = Modifier.height(13.dp))
             TopicChip(topics = topics)
@@ -253,6 +254,7 @@ fun ShowCount(
             text = title,
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
+            color = Color.Black,
         )
         Spacer(modifier = Modifier.height(7.dp))
         Text(
@@ -292,6 +294,7 @@ fun UserInfo(
             Text(
                 text = username,
                 fontSize = 30.sp,
+                color = Color.Black,
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
@@ -315,6 +318,7 @@ fun InfoRow(
         Text(
             text = title,
             fontSize = 20.sp,
+            color = Color.Black,
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(

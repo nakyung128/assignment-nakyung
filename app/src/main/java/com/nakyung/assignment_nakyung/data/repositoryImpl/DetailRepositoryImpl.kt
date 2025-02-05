@@ -6,7 +6,7 @@ import com.nakyung.assignment_nakyung.domain.model.DetailResponse
 import com.nakyung.assignment_nakyung.domain.model.RepoResponse
 import com.nakyung.assignment_nakyung.domain.model.UserResponse
 import com.nakyung.assignment_nakyung.domain.repository.DetailRepository
-import com.nakyung.assignment_nakyung.ui.util.toErrorMessage
+import com.nakyung.assignment_nakyung.core.util.toErrorMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

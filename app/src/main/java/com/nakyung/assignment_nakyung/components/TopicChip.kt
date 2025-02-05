@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nakyung.assignment_nakyung.ui.theme.LightGray
 
 @Composable
 fun TopicChip(topics: List<String>) {
@@ -35,7 +36,7 @@ fun Chip(topic: String) {
         modifier =
             Modifier
                 .background(
-                    color = Color(0xFFF1F3F5),
+                    color = LightGray,
                     shape = RoundedCornerShape(15.dp),
                 ).padding(horizontal = 10.dp, vertical = 2.dp),
         text = topic,

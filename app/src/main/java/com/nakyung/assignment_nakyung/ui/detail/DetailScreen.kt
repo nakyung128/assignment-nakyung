@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +40,7 @@ import coil.compose.AsyncImage
 import com.nakyung.assignment_nakyung.components.ErrorScreen
 import com.nakyung.assignment_nakyung.components.LoadingDialog
 import com.nakyung.assignment_nakyung.components.TopicChip
+import com.nakyung.assignment_nakyung.ui.theme.LightBlue
 import com.nakyung.assignment_nakyung.ui.util.toKFormat
 
 @Composable
@@ -175,7 +178,7 @@ fun DetailScreen(
                     onClick = { onShowBottomSheet(username) },
                     colors =
                         ButtonColors(
-                            containerColor = Color.Blue,
+                            containerColor = LightBlue,
                             contentColor = Color.White,
                             disabledContentColor = Color.DarkGray,
                             disabledContainerColor = Color.Gray,
@@ -206,6 +209,7 @@ fun DetailScreen(
             ModalBottomSheet(
                 containerColor = Color.White,
                 onDismissRequest = onBottomSheetDismiss,
+                dragHandle = null,
             ) {
                 when (bottomSheetUiState) {
                     is BottomSheetUiState.Success -> {
@@ -225,7 +229,9 @@ fun DetailScreen(
                     }
 
                     BottomSheetUiState.Loading -> {
-                        LoadingDialog()
+                        LoadingDialog(
+                            modifier = Modifier.heightIn(max = 400.dp),
+                        )
                     }
 
                     BottomSheetUiState.Hidden -> {}
@@ -271,6 +277,7 @@ fun UserInfo(
         modifier = Modifier.padding(horizontal = 20.dp),
     ) {
         Row(
+            modifier = Modifier.padding(top = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(

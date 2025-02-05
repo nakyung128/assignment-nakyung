@@ -3,6 +3,8 @@ package com.nakyung.assignment_nakyung.data.repositoryImpl
 import com.nakyung.assignment_nakyung.data.api.DetailApi
 import com.nakyung.assignment_nakyung.domain.Result
 import com.nakyung.assignment_nakyung.domain.model.DetailResponse
+import com.nakyung.assignment_nakyung.domain.model.RepoResponse
+import com.nakyung.assignment_nakyung.domain.model.UserResponse
 import com.nakyung.assignment_nakyung.domain.repository.DetailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,6 +22,26 @@ class DetailRepositoryImpl
             flow {
                 try {
                     val response = api.getDetail(owner, repo)
+                    emit(Result.Success(response))
+                } catch (e: Exception) {
+                    emit(Result.Error(e.message ?: ""))
+                }
+            }
+
+        override suspend fun getRepos(username: String): Flow<Result<List<RepoResponse>>> =
+            flow {
+                try {
+                    val response = api.getUserRepos(username)
+                    emit(Result.Success(response))
+                } catch (e: Exception) {
+                    emit(Result.Error(e.message ?: ""))
+                }
+            }
+
+        override suspend fun getUserInfo(username: String): Flow<Result<UserResponse>> =
+            flow {
+                try {
+                    val response = api.getUserInfo(username)
                     emit(Result.Success(response))
                 } catch (e: Exception) {
                     emit(Result.Error(e.message ?: ""))

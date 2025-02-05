@@ -3,11 +3,14 @@ package com.nakyung.assignment_nakyung.ui.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nakyung.assignment_nakyung.domain.Result
+import com.nakyung.assignment_nakyung.domain.model.RepoResponse
+import com.nakyung.assignment_nakyung.domain.model.UserResponse
 import com.nakyung.assignment_nakyung.domain.repository.DetailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,6 +51,66 @@ class DetailViewModel
                         }
                     }
                 }
+            }
+        }
+
+        fun loadBottomSheetData(username: String) {
+            viewModelScope.launch {
+                val currentState = _uiState.value
+                if (currentState is DetailUiState.Success) {
+                    _uiState.value =
+                        currentState.copy(
+                            bottomSheetUiState = BottomSheetUiState.Loading,
+                        )
+                    combine(
+                        detailRepository.getRepos(username),
+                        detailRepository.getUserInfo(username),
+                    ) { repoResponse, userResponse ->
+                        createBottomSheet(repoResponse, userResponse)
+                    }.collect { newState ->
+                        _uiState.value = currentState.copy(bottomSheetUiState = newState)
+                    }
+                }
+            }
+        }
+
+        private fun createBottomSheet(
+            repoResult: Result<List<RepoResponse>>,
+            userResult: Result<UserResponse>,
+        ): BottomSheetUiState =
+            when {
+                repoResult is Result.Success && userResult is Result.Success -> {
+                    val repoData = repoResult.data
+                    val userData = userResult.data
+                    val languageString =
+                        repoData
+                            .mapNotNull { it.language }
+                            .toSet()
+                            .joinToString(", ")
+
+                    BottomSheetUiState.Success(
+                        imgUrl = userData.avatarUrl,
+                        username = userData.login,
+                        followers = userData.followers,
+                        following = userData.following,
+                        language = languageString,
+                        repositories = repoData.size,
+                        bio = userData.bio,
+                    )
+                }
+
+                repoResult is Result.Error -> BottomSheetUiState.Error(repoResult.message)
+                userResult is Result.Error -> BottomSheetUiState.Error(userResult.message)
+                else -> BottomSheetUiState.Error("Unknown Error")
+            }
+
+        fun closeBottomSheet() {
+            val currentState = _uiState.value
+            if (currentState is DetailUiState.Success) {
+                _uiState.value =
+                    currentState.copy(
+                        bottomSheetUiState = BottomSheetUiState.Hidden,
+                    )
             }
         }
     }

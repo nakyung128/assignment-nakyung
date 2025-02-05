@@ -16,12 +16,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +41,7 @@ import coil.compose.AsyncImage
 import com.nakyung.assignment_nakyung.components.ErrorScreen
 import com.nakyung.assignment_nakyung.components.LoadingDialog
 import com.nakyung.assignment_nakyung.components.TopicChip
-import com.nakyung.assignment_nakyung.components.toKFormat
+import com.nakyung.assignment_nakyung.ui.util.toKFormat
 
 @Composable
 fun DetailRoute(
@@ -83,6 +88,7 @@ fun HandleDetailUi(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
@@ -96,6 +102,7 @@ fun DetailScreen(
     topics: List<String>,
 ) {
     val scrollState = rememberScrollState()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Surface(
         modifier =
@@ -156,7 +163,9 @@ fun DetailScreen(
                 )
                 Box(modifier = Modifier.weight(1f))
                 Button(
-                    onClick = { },
+                    onClick = {
+                        showBottomSheet = true
+                    },
                     colors =
                         ButtonColors(
                             containerColor = Color.Blue,
@@ -185,6 +194,25 @@ fun DetailScreen(
                 fontSize = 18.sp,
             )
         }
+
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                containerColor = Color.White,
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+            ) {
+                UserInfo(
+                    imgUrl = "",
+                    username = "owncloud",
+                    followers = 954,
+                    following = 0,
+                    language = "PHP, Shell, Kotlin, Java, JavaScript, Go, Python",
+                    repositories = 168,
+                    bio = "asdfasdfasdf",
+                )
+            }
+        }
     }
 }
 
@@ -210,17 +238,75 @@ fun ShowCount(
     }
 }
 
-@Preview
+@Composable
+fun UserInfo(
+    imgUrl: String,
+    username: String,
+    followers: Int,
+    following: Int,
+    language: String,
+    repositories: Int,
+    bio: String,
+) {
+    Column(
+        modifier = Modifier.padding(horizontal = 20.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage(
+                modifier =
+                    Modifier
+                        .size(size = 50.dp)
+                        .clip(shape = CircleShape),
+                model = imgUrl,
+                contentDescription = "user_profile",
+            )
+            Text(
+                text = username,
+                fontSize = 30.sp,
+            )
+        }
+        Spacer(modifier = Modifier.height(30.dp))
+        InfoRow(title = "Followers", content = followers.toKFormat())
+        InfoRow(title = "Following", content = following.toKFormat())
+        InfoRow(title = "Language", content = language)
+        InfoRow(title = "Repositories", content = repositories.toKFormat())
+        InfoRow(title = "Bio", content = bio)
+    }
+}
+
+@Composable
+fun InfoRow(
+    title: String,
+    content: String,
+) {
+    Row(
+        modifier = Modifier.padding(bottom = 25.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = title,
+            fontSize = 20.sp,
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = content,
+            color = Color.Gray,
+        )
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 fun DetailScreenPreview() {
-    DetailScreen(
+    UserInfo(
         imgUrl = "",
-        name = "android",
-        starCount = 3900,
-        watcherCount = 3900,
-        forksCount = 3100,
-        description = ":phone: The ownCloud Android App",
-        topics = listOf("android", "kotlin", "owncloud", "android", "kotlin", "owncloud"),
         username = "owncloud",
+        followers = 954,
+        following = 0,
+        language = "Kotlin, Java, C++, JavaScript, Python",
+        repositories = 168,
+        bio = "asdfasdfasdf",
     )
 }

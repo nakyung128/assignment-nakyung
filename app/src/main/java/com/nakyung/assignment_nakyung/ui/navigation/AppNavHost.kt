@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nakyung.assignment_nakyung.ui.detail.DetailRoute
 import com.nakyung.assignment_nakyung.ui.search.SearchRoute
 
 @Composable
@@ -23,9 +24,22 @@ fun AppNavHost(
         ) {
             SearchRoute(
                 modifier = modifier,
-                navigateToDetail = {
-                    navController.navigate(ScreenDestinations.Detail.route)
+                navigateToDetail = { owner, repo ->
+                    navController.navigate(ScreenDestinations.Detail.createRoute(owner, repo))
                 },
+            )
+        }
+
+        composable(
+            route = ScreenDestinations.Detail.route,
+            arguments = ScreenDestinations.Detail.arguments,
+        ) { backStackEntry ->
+            val arg = backStackEntry.arguments
+
+            DetailRoute(
+                modifier = modifier,
+                owner = arg?.getString("owner") ?: "",
+                repo = arg?.getString("repo") ?: "",
             )
         }
     }

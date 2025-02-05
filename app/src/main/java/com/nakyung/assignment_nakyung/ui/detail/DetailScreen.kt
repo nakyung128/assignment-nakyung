@@ -24,9 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,13 +52,20 @@ fun DetailRoute(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    HandleDetailUi(modifier = modifier, uiState = uiState)
+    HandleDetailUi(
+        modifier = modifier,
+        uiState = uiState,
+        onBottomSheetDismiss = viewModel::closeBottomSheet,
+        onShowBottomSheet = viewModel::loadBottomSheetData,
+    )
 }
 
 @Composable
 fun HandleDetailUi(
     modifier: Modifier,
     uiState: DetailUiState,
+    onBottomSheetDismiss: () -> Unit,
+    onShowBottomSheet: (String) -> Unit,
 ) {
     when (uiState) {
         is DetailUiState.Success -> {
@@ -75,6 +79,9 @@ fun HandleDetailUi(
                 forksCount = uiState.forksCount,
                 description = uiState.description,
                 topics = uiState.topics,
+                bottomSheetUiState = uiState.bottomSheetUiState,
+                onBottomSheetDismiss = onBottomSheetDismiss,
+                onShowBottomSheet = onShowBottomSheet,
             )
         }
 
@@ -100,9 +107,11 @@ fun DetailScreen(
     forksCount: Int,
     description: String,
     topics: List<String>,
+    bottomSheetUiState: BottomSheetUiState,
+    onShowBottomSheet: (String) -> Unit,
+    onBottomSheetDismiss: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    var showBottomSheet by remember { mutableStateOf(false) }
 
     Surface(
         modifier =
@@ -163,9 +172,7 @@ fun DetailScreen(
                 )
                 Box(modifier = Modifier.weight(1f))
                 Button(
-                    onClick = {
-                        showBottomSheet = true
-                    },
+                    onClick = { onShowBottomSheet(username) },
                     colors =
                         ButtonColors(
                             containerColor = Color.Blue,
@@ -195,22 +202,34 @@ fun DetailScreen(
             )
         }
 
-        if (showBottomSheet) {
+        if (bottomSheetUiState != BottomSheetUiState.Hidden) {
             ModalBottomSheet(
                 containerColor = Color.White,
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
+                onDismissRequest = onBottomSheetDismiss,
             ) {
-                UserInfo(
-                    imgUrl = "",
-                    username = "owncloud",
-                    followers = 954,
-                    following = 0,
-                    language = "PHP, Shell, Kotlin, Java, JavaScript, Go, Python",
-                    repositories = 168,
-                    bio = "asdfasdfasdf",
-                )
+                when (bottomSheetUiState) {
+                    is BottomSheetUiState.Success -> {
+                        UserInfo(
+                            imgUrl = imgUrl,
+                            username = username,
+                            followers = bottomSheetUiState.followers,
+                            following = bottomSheetUiState.following,
+                            language = bottomSheetUiState.language,
+                            repositories = bottomSheetUiState.repositories,
+                            bio = bottomSheetUiState.bio ?: "no bio",
+                        )
+                    }
+
+                    is BottomSheetUiState.Error -> {
+                        ErrorScreen(message = bottomSheetUiState.message)
+                    }
+
+                    BottomSheetUiState.Loading -> {
+                        LoadingDialog()
+                    }
+
+                    BottomSheetUiState.Hidden -> {}
+                }
             }
         }
     }
@@ -262,6 +281,7 @@ fun UserInfo(
                 model = imgUrl,
                 contentDescription = "user_profile",
             )
+            Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = username,
                 fontSize = 30.sp,

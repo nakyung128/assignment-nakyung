@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +24,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.nakyung.assignment_nakyung.components.ErrorScreen
+import com.nakyung.assignment_nakyung.components.LoadingDialog
 import com.nakyung.assignment_nakyung.components.RepoListItem
 import com.nakyung.assignment_nakyung.components.SearchBar
 import com.nakyung.assignment_nakyung.domain.model.Item
@@ -106,7 +107,7 @@ fun SearchScreen(
 
     when {
         resultList.loadState.refresh is LoadState.Loading -> {
-            LoadingScreen()
+            LoadingDialog()
         }
 
         else -> {
@@ -126,31 +127,5 @@ fun SearchScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun ErrorScreen(
-    modifier: Modifier = Modifier,
-    message: String,
-) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = message,
-            fontSize = 16.sp,
-        )
     }
 }

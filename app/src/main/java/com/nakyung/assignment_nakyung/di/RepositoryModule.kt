@@ -1,6 +1,8 @@
 package com.nakyung.assignment_nakyung.di
 
+import com.nakyung.assignment_nakyung.data.repositoryImpl.DetailRepositoryImpl
 import com.nakyung.assignment_nakyung.data.repositoryImpl.SearchRepositoryImpl
+import com.nakyung.assignment_nakyung.domain.repository.DetailRepository
 import com.nakyung.assignment_nakyung.domain.repository.SearchRepository
 import dagger.Binds
 import dagger.Module
@@ -14,4 +16,8 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository
+
+    @Binds
+    @Singleton
+    fun bindDetailRepository(detailRepositoryImpl: DetailRepositoryImpl): DetailRepository
 }

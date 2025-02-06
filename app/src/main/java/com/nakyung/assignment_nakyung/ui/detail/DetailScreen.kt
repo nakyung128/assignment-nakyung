@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -117,13 +115,14 @@ fun DetailScreen(
     onBottomSheetDismiss: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val colors = MaterialTheme.colorScheme
 
     Surface(
         modifier =
             modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState),
-        color = Color.White,
+        color = colors.background,
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 15.dp),
@@ -133,7 +132,7 @@ fun DetailScreen(
                 text = name,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.Black,
+                color = colors.primary,
             )
             Spacer(modifier = Modifier.height(13.dp))
             TopicChip(topics = topics)
@@ -174,7 +173,7 @@ fun DetailScreen(
                 Text(
                     text = username,
                     fontSize = 18.sp,
-                    color = Color.DarkGray,
+                    color = colors.secondary,
                 )
                 Box(modifier = Modifier.weight(1f))
                 Button(
@@ -196,14 +195,14 @@ fun DetailScreen(
             Text(
                 modifier = Modifier.padding(top = 30.dp),
                 text = "Description",
-                color = Color.Black,
+                color = colors.primary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold,
             )
             Text(
                 modifier = Modifier.padding(top = 10.dp),
                 text = description,
-                color = Color.DarkGray,
+                color = colors.secondary,
                 fontSize = 18.sp,
             )
         }
@@ -211,7 +210,7 @@ fun DetailScreen(
         if (bottomSheetUiState != BottomSheetUiState.Hidden) {
             ModalBottomSheet(
                 modifier = Modifier.wrapContentSize(),
-                containerColor = Color.White,
+                containerColor = colors.surface,
                 onDismissRequest = onBottomSheetDismiss,
                 dragHandle = null,
             ) {
@@ -250,6 +249,7 @@ fun ShowCount(
     title: String,
     count: Int,
 ) {
+    val colors = MaterialTheme.colorScheme
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -257,13 +257,13 @@ fun ShowCount(
             text = title,
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color.Black,
+            color = colors.primary,
         )
         Spacer(modifier = Modifier.height(7.dp))
         Text(
             text = count.toKFormat(),
             fontSize = 18.sp,
-            color = Color.Gray,
+            color = colors.tertiary,
         )
     }
 }
@@ -278,6 +278,7 @@ fun UserInfo(
     repositories: Int,
     bio: String,
 ) {
+    val colors = MaterialTheme.colorScheme
     Column(
         modifier = Modifier.padding(horizontal = 20.dp),
     ) {
@@ -297,7 +298,7 @@ fun UserInfo(
             Text(
                 text = username,
                 fontSize = 30.sp,
-                color = Color.Black,
+                color = colors.primary,
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
@@ -314,6 +315,7 @@ fun InfoRow(
     title: String,
     content: String,
 ) {
+    val colors = MaterialTheme.colorScheme
     Row(
         modifier = Modifier.padding(bottom = 25.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -321,12 +323,12 @@ fun InfoRow(
         Text(
             text = title,
             fontSize = 20.sp,
-            color = Color.Black,
+            color = colors.primary,
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = content,
-            color = Color.Gray,
+            color = colors.tertiary,
         )
     }
 }

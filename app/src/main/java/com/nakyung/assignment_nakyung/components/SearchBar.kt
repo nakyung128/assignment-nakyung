@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -26,6 +27,7 @@ fun SearchBar(
     onSearchClick: () -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val colors = MaterialTheme.colorScheme
 
     TextField(
         modifier =
@@ -53,11 +55,11 @@ fun SearchBar(
         },
         colors =
             TextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White,
-                unfocusedIndicatorColor = Color.Gray,
-                focusedIndicatorColor = Color.Black,
-                focusedTextColor = Color.Black,
+                unfocusedContainerColor = colors.background,
+                focusedContainerColor = colors.background,
+                unfocusedIndicatorColor = colors.tertiary,
+                focusedIndicatorColor = colors.primary,
+                focusedTextColor = colors.primary,
             ),
         keyboardOptions =
             KeyboardOptions(

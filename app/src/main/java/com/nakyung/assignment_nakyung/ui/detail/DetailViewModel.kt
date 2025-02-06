@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,7 +33,6 @@ class DetailViewModel
                     when (response) {
                         is Result.Success -> {
                             val data = response.data
-
                             _uiState.value =
                                 DetailUiState.Success(
                                     imgUrl = data.owner.avatarUrl,
@@ -56,19 +56,29 @@ class DetailViewModel
 
         fun loadBottomSheetData(username: String) {
             viewModelScope.launch {
-                val currentState = _uiState.value
-                if (currentState is DetailUiState.Success) {
-                    _uiState.value =
+                _uiState.update { currentState ->
+                    if (currentState is DetailUiState.Success) {
                         currentState.copy(
                             bottomSheetUiState = BottomSheetUiState.Loading,
                         )
-                    combine(
-                        detailRepository.getRepos(username),
-                        detailRepository.getUserInfo(username),
-                    ) { repoResponse, userResponse ->
-                        createBottomSheet(repoResponse, userResponse)
-                    }.collect { newState ->
-                        _uiState.value = currentState.copy(bottomSheetUiState = newState)
+                    } else {
+                        currentState
+                    }
+                }
+                combine(
+                    detailRepository.getRepos(username),
+                    detailRepository.getUserInfo(username),
+                ) { repoResult, userResult ->
+                    createBottomSheet(repoResult, userResult)
+                }.collect { newState ->
+                    _uiState.update { state ->
+                        if (state is DetailUiState.Success) {
+                            state.copy(
+                                bottomSheetUiState = newState,
+                            )
+                        } else {
+                            state
+                        }
                     }
                 }
             }
@@ -105,12 +115,14 @@ class DetailViewModel
             }
 
         fun closeBottomSheet() {
-            val currentState = _uiState.value
-            if (currentState is DetailUiState.Success) {
-                _uiState.value =
+            _uiState.update { currentState ->
+                if (currentState is DetailUiState.Success) {
                     currentState.copy(
                         bottomSheetUiState = BottomSheetUiState.Hidden,
                     )
+                } else {
+                    currentState
+                }
             }
         }
     }

@@ -95,12 +95,6 @@ fun SearchScreen(
     resultList: LazyPagingItems<Item>,
     navigateToDetail: (String, String) -> Unit,
 ) {
-    val state = rememberLazyListState()
-
-    LaunchedEffect(resultList.loadState.refresh) {
-        state.scrollToItem(0)
-    }
-
     when {
         resultList.loadState.refresh is LoadState.Loading -> {
             LoadingDialog()
@@ -109,7 +103,6 @@ fun SearchScreen(
         else -> {
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
-                state = state,
             ) {
                 items(resultList.itemCount) { index ->
                     val item = resultList[index]

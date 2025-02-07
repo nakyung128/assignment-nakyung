@@ -87,7 +87,7 @@ fun RepoListItem(
                 tint = StarYellow,
             )
             Text(
-                modifier = Modifier.padding(start = 5.dp),
+                modifier = Modifier.padding(start = 4.dp),
                 text = item.stargazersCount.toKFormat(),
                 color = Color.Gray,
             )

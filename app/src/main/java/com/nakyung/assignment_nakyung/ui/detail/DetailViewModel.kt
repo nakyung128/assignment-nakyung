@@ -104,7 +104,7 @@ class DetailViewModel
                         followers = userData.followers,
                         following = userData.following,
                         language = languageString,
-                        repositories = repoData.size,
+                        repositories = userData.publicRepos,
                         bio = userData.bio,
                     )
                 }

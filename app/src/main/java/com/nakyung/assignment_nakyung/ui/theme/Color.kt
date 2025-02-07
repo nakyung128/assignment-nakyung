@@ -24,3 +24,5 @@ val OtherColor = Color(0xFFededed)
 
 val LightGray = Color(0xFFF1F3F5)
 val LightBlue = Color(0xFF3CB4FF)
+
+val StarYellow = Color(0xFFF7AF1E)

@@ -26,6 +26,7 @@ import coil.compose.AsyncImage
 import com.nakyung.assignment_nakyung.R
 import com.nakyung.assignment_nakyung.domain.model.Item
 import com.nakyung.assignment_nakyung.core.util.toKFormat
+import com.nakyung.assignment_nakyung.ui.theme.StarYellow
 
 @Composable
 fun RepoListItem(
@@ -81,7 +82,7 @@ fun RepoListItem(
             Icon(
                 painter = painterResource(id = R.drawable.ic_star),
                 contentDescription = "star",
-                tint = Color.Yellow,
+                tint = StarYellow,
             )
             Text(
                 modifier = Modifier.padding(start = 5.dp),

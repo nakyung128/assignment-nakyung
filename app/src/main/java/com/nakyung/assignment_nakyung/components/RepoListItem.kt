@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.nakyung.assignment_nakyung.R
-import com.nakyung.assignment_nakyung.domain.model.Item
 import com.nakyung.assignment_nakyung.core.util.toKFormat
+import com.nakyung.assignment_nakyung.domain.model.Item
 import com.nakyung.assignment_nakyung.ui.theme.StarYellow
 
 @Composable
@@ -35,6 +36,8 @@ fun RepoListItem(
     item: Item,
     onClick: (String, String) -> Unit,
 ) {
+    val colors = MaterialTheme.colorScheme
+
     Column(
         modifier =
             modifier
@@ -57,14 +60,14 @@ fun RepoListItem(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = item.owner.login,
-                color = Color.Gray,
+                color = colors.tertiary,
                 fontSize = 18.sp,
             )
         }
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = item.name,
-            color = Color.Black,
+            color = colors.primary,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -72,7 +75,7 @@ fun RepoListItem(
         if (item.description != null) {
             Text(
                 text = item.description,
-                color = Color.DarkGray,
+                color = colors.secondary,
                 fontSize = 18.sp,
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -89,7 +92,7 @@ fun RepoListItem(
             Text(
                 modifier = Modifier.padding(start = 4.dp),
                 text = item.stargazersCount.toKFormat(),
-                color = Color.Gray,
+                color = colors.tertiary,
             )
             if (item.language != null) {
                 Spacer(modifier = Modifier.width(8.dp))

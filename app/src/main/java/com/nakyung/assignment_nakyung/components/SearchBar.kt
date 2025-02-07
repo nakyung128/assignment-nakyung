@@ -45,6 +45,7 @@ fun SearchBar(
                         .size(size = 30.dp)
                         .clickable {
                             onSearchClick()
+                            keyboardController?.hide()
                         },
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = "search",

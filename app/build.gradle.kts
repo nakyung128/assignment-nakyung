@@ -86,4 +86,7 @@ dependencies {
 
     // pagination
     implementation(libs.androidx.paging.compose)
+
+    // test
+    testImplementation(libs.mockk)
 }

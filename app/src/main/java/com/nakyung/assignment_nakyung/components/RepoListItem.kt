@@ -24,9 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.nakyung.assignment_nakyung.R
 import com.nakyung.assignment_nakyung.core.util.toKFormat
 import com.nakyung.assignment_nakyung.domain.model.Item
+import com.nakyung.assignment_nakyung.ui.theme.StarYellow
 
 @Composable
 fun RepoListItem(
@@ -82,12 +84,13 @@ fun RepoListItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
+                modifier = Modifier.size(20.dp),
                 painter = painterResource(id = R.drawable.ic_star),
                 contentDescription = "star",
-                tint = Color.Yellow,
+                tint = StarYellow,
             )
             Text(
-                modifier = Modifier.padding(start = 5.dp),
+                modifier = Modifier.padding(start = 4.dp),
                 text = item.stargazersCount.toKFormat(),
                 color = colors.tertiary,
             )

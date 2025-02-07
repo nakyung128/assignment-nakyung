@@ -320,28 +320,98 @@ fun loadBottomSheetData(username: String) {
 
 <br>
 
+## 💡 단위 테스트
+`DetailViewModel`의 비즈니스 로직이 올바르게 동작하는지 검증하기 위해 단위 테스트를 진행하였습니다. 
+- `StandardDispaatcher`를 사용해 코루틴 실행을 제어하여 안정적인 테스트 환경을 구축하였습니다.
+- `Mockk`을 이용하여 Repository 의존성을 분리해 ViewModel만 테스트 가능하도록 설정하였습니다.
+- `DetailUiState`의 상태 변화를 검증하여 ViewModel의 동작을 확인하였습니다.
+
+```Kotlin
+@ExperimentalCoroutinesApi
+class DetailViewModelTest {
+    private lateinit var viewModel: DetailViewModel
+    private val detailRepository: DetailRepository = mockk()
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(StandardTestDispatcher())
+        viewModel = DetailViewModel(detailRepository)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
+    @Test
+    fun `레포지토리 상세 정보 조회 성공 시 UI 상태가 Success로 변경된다`() =
+        runTest {
+            // Given : 가짜 응답 데이터
+            val fakeDetail =
+                DetailResponse(
+                    name = "TestRepo",
+                    owner = Owner("test_user", "https://example.com/avatar.png"),
+                    description = "test description",
+                    ...
+                    topics = listOf("topic1", "topic2"),
+                )
+
+            // When
+            coEvery {
+                detailRepository.getDetail("test_user", "TestRepo")
+            } returns flowOf(Result.Success(fakeDetail))
+
+            viewModel.getDetail("test_user", "TestRepo")
+            advanceUntilIdle() // 코루틴 실행
+
+            // Then
+            val expectedState =
+                DetailUiState.Success(
+                    imgUrl = "https://example.com/avatar.png",
+                    username = "test_user",
+                    ...
+                    description = "test description",
+                    topics = listOf("topic1", "topic2"),
+                )
+            assertEquals(expectedState, viewModel.uiState.value)
+        }
+   ...
+}
+```
+<img width="1318" alt="image" src="https://github.com/user-attachments/assets/78fc4dc0-de87-41ea-ae05-73ee59c1284a" />
+
+<br><br>
+
 ## 📚 사용 기술 및 라이브러리
 ### 📱 Android
-* **Minimum SDK**: 26
-* **Target SDK**: 34
-* **Jetpack Compose** - 최신 UI 개발을 위한 선언형 UI 프레임워크
-* **Navigation Compose** - 화면 간 네비게이션 처리
-* **Coil** - 이미지 로딩 라이브러리
+- **Minimum SDK**: 26
+- **Target SDK**: 34
+- **Jetpack Compose** - 최신 UI 개발을 위한 선언형 UI 프레임워크
+- **Navigation Compose** - 화면 간 네비게이션 처리
+- **Coil** - 이미지 로딩 라이브러리
   
 ### 🛜 네트워크
-* Retrofit - REST API 통신 라이브러리
-* Gson - JSON 데이터를 Kotlin 객체로 변환
-* OkHttp Logging Interceptor - 네트워크 요청 및 응답 로그 출력
+- **Retrofit** - REST API 통신 라이브러리
+- **Gson** - JSON 데이터를 Kotlin 객체로 변환
+- **OkHttp Logging Interceptor** - 네트워크 요청 및 응답 로그 출력
   
 ### 🔥 의존성 주입
-* **Hilt** - DI 프레임워크
+- **Hilt** - DI 프레임워크
   
 ### 💿 데이터 관리
-* **Paging3** - 대량 데이터 페이징 처리
+- **Paging3** - 대량 데이터 페이징 처리
 
 ### 🔍 테스트
+- **JUnit** - 단위 테스트
+
+- **Mockk** - 테스트를 위한 가짜 객체 생성
+- **kotlinx-coroutines-test** - 코루틴 테스트
 
 <br>
 
-## 🐱 작동 화면
-- 여기에 gif
+
+## 🐱 실행 화면
+
+| <div align="center">**메인 페이지**</div> | <div align="center">**상세 페이지**</div> | <div align="center">**페이징**</div> | <div align="center">**전체 실행(다크모드)**</div> |
+| :---: | :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/0d1a3522-6f1e-4cd2-9bc3-8735f4decf38" width="200"> | <img src="https://github.com/user-attachments/assets/95bb3ef0-a859-497e-8085-9b12cc525669" width="200"> | <img src="https://github.com/user-attachments/assets/72fc52f1-7a57-4f3e-86b1-09e85183b17b" width="200"> | <img src="https://github.com/user-attachments/assets/026beadc-8c11-4d8c-8ffa-8212e72b3a1a" width="200"> |

@@ -29,6 +29,13 @@ class SearchViewModel
         private val _uiState = MutableStateFlow<SearchUiState>(SearchUiState.Init)
         val uiState = _uiState.asStateFlow()
 
+        var keyword = MutableStateFlow("")
+            private set
+
+        fun updateKeyword(newKeyword: String) {
+            keyword.value = newKeyword
+        }
+
         fun getSearchResult(keyword: String) {
             viewModelScope.launch {
                 searchRepo(keyword)

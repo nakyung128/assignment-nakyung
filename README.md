@@ -400,6 +400,7 @@ class DetailViewModelTest {
   
 ### 💿 데이터 관리
 - **Paging3** - 대량 데이터 페이징 처리
+![페이징]()
 
 ### 🔍 테스트
 - **JUnit** - 단위 테스트
@@ -414,4 +415,4 @@ class DetailViewModelTest {
 
 | <div align="center">**메인 페이지**</div> | <div align="center">**상세 페이지**</div> | <div align="center">**페이징**</div> | <div align="center">**전체 실행(다크모드)**</div> |
 | :---: | :---: | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/0d1a3522-6f1e-4cd2-9bc3-8735f4decf38" width="200"> | <img src="https://github.com/user-attachments/assets/95bb3ef0-a859-497e-8085-9b12cc525669" width="200"> | <img src="https://github.com/user-attachments/assets/72fc52f1-7a57-4f3e-86b1-09e85183b17b" width="200"> | <img src="https://github.com/user-attachments/assets/026beadc-8c11-4d8c-8ffa-8212e72b3a1a" width="200"> |
+| <img src="https://github.com/user-attachments/assets/0d1a3522-6f1e-4cd2-9bc3-8735f4decf38" width="200"> | <img src="https://github.com/user-attachments/assets/95bb3ef0-a859-497e-8085-9b12cc525669" width="200"> | <img src="https://github.com/user-attachments/assets/84d8dc23-199d-4a8e-ae4f-3c8fd1ae56e1" width="200"> | <img src="https://github.com/user-attachments/assets/026beadc-8c11-4d8c-8ffa-8212e72b3a1a" width="200"> |

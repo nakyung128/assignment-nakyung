@@ -13,8 +13,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,26 +37,30 @@ fun SearchRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val resultList = viewModel.pagingData.collectAsLazyPagingItems()
+    val keyword by viewModel.keyword.collectAsStateWithLifecycle()
 
     HandleSearchUi(
         modifier = modifier,
+        keyword = keyword,
         searchRepo = viewModel::getSearchResult,
         uiState = uiState,
         resultList = resultList,
         navigateToDetail = navigateToDetail,
+        updateKeyword = viewModel::updateKeyword,
     )
 }
 
 @Composable
 fun HandleSearchUi(
     modifier: Modifier,
+    keyword: String,
+    updateKeyword: (String) -> Unit,
     searchRepo: (String) -> Unit,
     uiState: SearchUiState,
     resultList: LazyPagingItems<Item>,
     navigateToDetail: (String, String) -> Unit,
 ) {
     val colors = MaterialTheme.colorScheme
-    var keyword by remember { mutableStateOf("") }
 
     Column(
         modifier =
@@ -68,7 +70,9 @@ fun HandleSearchUi(
     ) {
         SearchBar(
             keyword = keyword,
-            onKeywordChanged = { keyword = it },
+            onKeywordChanged = {
+                updateKeyword(it)
+            },
             onSearchClick = {
                 searchRepo(keyword)
             },

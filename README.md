@@ -385,6 +385,7 @@ class DetailViewModelTest {
 ## 📚 사용 기술 및 라이브러리
 ### 📱 Android
 - **Minimum SDK**: 26
+- **Compile SDK**: 34
 - **Target SDK**: 34
 - **Jetpack Compose** - 최신 UI 개발을 위한 선언형 UI 프레임워크
 - **Navigation Compose** - 화면 간 네비게이션 처리
@@ -400,7 +401,6 @@ class DetailViewModelTest {
   
 ### 💿 데이터 관리
 - **Paging3** - 대량 데이터 페이징 처리
-![페이징]()
 
 ### 🔍 테스트
 - **JUnit** - 단위 테스트
